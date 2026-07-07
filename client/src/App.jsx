@@ -1,9 +1,12 @@
 import "./App.css";
+import BlogPost from "./components/BlogPost";
 import React from "react";
+
 function App() {
+
   return (
   <div className="App">
-    <h1>Hello World</h1>
+    <BlogPost />
   </div>
   );
 }
