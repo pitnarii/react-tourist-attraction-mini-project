@@ -3,16 +3,22 @@ import axios from "axios";
 
 function BlogPost() {
   const [posts, setPosts] = useState([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
+    if (search.trim() === "") {
+      setPosts(posts);
+      return;
+    }
     axios
       .get("http://localhost:4001/trips", {
-        params: { keywords: "เกาะ จุดถ่ายรูป" },
+        params: { keywords: search },
       })
       .then((res) => setPosts(res.data.data))
       .catch((err) => console.log(err));
-  }, []);
+  }, [search]);
   console.log(posts);
+
   return (
     <div className="BlogPost flex flex-col items-center justify-center gap-4 pt-10">
       <h1 className="text-4xl font-bold text-blue-500">เที่ยวที่ไหนดี</h1>
@@ -21,10 +27,11 @@ function BlogPost() {
           ค้นหาที่เที่ยวที่
         </label>
         <input
-          id="search"
-          type="text"
+          type="search"
           placeholder="หาที่เที่ยวแล้วไปกัน..."
           className="w-full text-center border-0 border-b-2 border-gray-400 outline-none focus:border-b-blue-50r"
+          value={search}
+          onChange={(e)=>setSearch(e.target.value)}
         />
         
       </div>
@@ -47,7 +54,11 @@ function BlogPost() {
               <p className="text-sm text-gray-500 flex flex-row gap-2">
                 หมวด
                 {post.tags.map((tag) => (
-                  <span key={tag} className="underline text-gray-500">
+                  <span 
+                    key={tag} 
+                    className="underline text-gray-500 cursor-pointer"
+                    onClick={()=>setSearch(`${search} ${tag}`)}
+                  >
                     {tag}
                   </span>
                 ))}
