@@ -6,10 +6,6 @@ function BlogPost() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    if (search.trim() === "") {
-      setPosts(posts);
-      return;
-    }
     axios
       .get("http://localhost:4001/trips", {
         params: { keywords: search },
